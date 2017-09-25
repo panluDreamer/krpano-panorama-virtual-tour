@@ -1,0 +1,86 @@
+<krpano>
+
+	<layer name="share" keep="true" type="container" align="rightbottom"
+		edge="rightbottom" x="20" y="4" x.mobile="60" y.mobile="5" width="50"
+		height="60" width.mobile="50" height.mobile="50" maskchildren="true"
+		scalechildren="true" devices="desktop">
+		<layer name="share-QRcode" type="container" align="top" edge="top"
+			height="35" width="35" width.mobile="30" height.mobile="30" url="fang.png"
+			onclick="showLg();" />
+	</layer>
+
+	<plugin name="qrcode" keep="true" url="qrcode.js" onloaded="addQR();" />
+
+
+	<layer name="skin_ljgolf" align="center" url="erwm.jpg" y="15" x="10"
+		zorder="999" scale="1.5" alpha="1" keep="true" visible="false"
+		onclick="showLg();">
+
+		<layer name="QR" keep="true" devices="desktop" align="lefttop"
+			y="50" x="15" width="230" height="230" scale="1" alpha="1" visible="true"
+			isMiddle="false" zorder="100" onclick="" />
+
+	</layer>
+
+	<action name="showLg">
+		if(layer[skin_ljgolf].visible,
+		tween(layer[skin_ljgolf].alpha,0);delayedcall(0.5,set(layer[skin_ljgolf].visible,false)),
+		set(layer[skin_ljgolf].visible,true);
+		tween(layer[skin_ljgolf].alpha,1) )
+		set(layer[skin_ljgolf].visible,false);
+		set(events.onclick,
+		set(events.onclick,null);set(layer[skin_ljgolf].visible,false););
+	</action>
+
+	<action name="addQR" devices="desktop">
+		plugin[qrcode].get_qr_image(new_url);
+		set(layer[QR].url,get(new_url));
+	</action>
+
+	<events name="QRResizeEvent" onresize="onResizeAction()" keep="true" />
+
+	<action name="onResizeAction">
+		if(layer[QR].isMiddle,
+
+		def(a,number,calc(stagewidth/layer[QR].width));
+		def(b,number,calc(stageheight/layer[QR].height));
+		Math.min(scaleMax,get(a),get(b));
+
+		set(layer[QR].scale,get(scaleMax));
+
+		def(stageW,number,get(stagewidth));
+		def(QRW,number,get(layer[QR].width));
+		set(layer[QR].x,calc((stageW-QRW*scaleMax)/2));
+		)
+	</action>
+
+	<action name="tweenCenter">
+
+		trace(stagewidth);
+		trace(layer[%1].width);
+		def(a,number,calc(stagewidth/layer[%1].width));
+		def(b,number,calc(stageheight/layer[%1].height));
+		Math.min(scaleMax,get(a),get(b));
+		trace(get(scaleMax));
+		tween(layer[%1].alpha,1);
+		tween(layer[%1].scale,get(scaleMax));
+
+		def(stageW,number,get(stagewidth));
+		def(QRW,number,get(layer[%1].width));
+		tween(layer[%1].x,calc((stageW-QRW*scaleMax)/2));
+
+		set(layer[%1].onclick,"tweenRight(get(name))");
+		set(layer[%1].isMiddle,"true");
+	</action>
+
+
+	<action name="tweenRight">
+		tween(layer[%1].alpha,0.25);
+		tween(layer[%1].scale,0.1);
+		tween(layer[%1].x,10);
+
+		set(layer[%1].onclick,"tweenCenter(get(name))");
+		set(layer[%1].isMiddle,"false");
+	</action>
+
+</krpano>

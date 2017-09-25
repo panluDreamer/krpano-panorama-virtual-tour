@@ -1,0 +1,139 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript"
+	src="http://localhost:8080/krpanoWeb/js/modify.js">
+	
+</script>
+<script type="text/javascript"
+	src="http://localhost:8080/krpanoWeb/js/jquery-1.12.4.min.js">
+	
+</script>
+<script type="text/javascript"
+	src="http://localhost:8080/krpanoWeb/js/panohelp.js"></script>
+<script type="text/javascript"
+	src="http://localhost:8080/krpanoWeb/js/util.js"></script>
+<script type="text/javascript"
+	src="http://localhost:8080/krpanoWeb/js/plugindata.js"></script>
+<title>享受美丽的全景漫游吧!</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta http-equiv="x-ua-compatible" content="IE=edge" />
+<style>
+@
+-ms-viewport {
+	width: device-width;
+}
+
+@media only screen and (min-device-width:800px) {
+	html {
+		overflow: hidden;
+	}
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	height: 100%;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #FFFFFF;
+	background-color: #000000;
+}
+</style>
+<script type="text/javascript">
+	var currUser = getCurrLoginUser();
+</script>
+</head>
+<body>
+
+
+	<script src="tour.js"></script>
+	<script type="text/javascript">
+		/**
+		 *username,pano_id在modify.js中得到值
+		 */
+		//alert("username = " + username + " pano_id=" + pano_id);
+		/**
+		 *currentUsername中为当前用户的登录名，若未登录则为"nouser",已登陆则为用户名
+		 */
+		var currentUsername = eval("(" + currUser + ")").user;
+		//alert("current Username:" + currentUsername);
+		/**
+		 *获取全景信息
+		 */
+		var pano_data = getPanoById(pano_id);
+		//alert("pano_data = " + pano_data);
+		var pano = eval("(" + pano_data + ")");
+		var panoInfo = pano.data.info;
+		/**
+		 *获取背景音乐信息
+		 */
+		var pano_music = getBgMusicById(pano_id);
+		var music_json = eval("(" + pano_music + ")");
+		var music_path = music_json.music;//Json对象中取数据
+	</script>
+	<div id="pano" style="width: 100%; height: 100%;">
+		<noscript>
+			<table style="width: 100%; height: 100%;">
+				<tr style="vertical-align: middle;">
+					<td><div style="text-align: center;">
+							ERROR:<br /> <br />Javascript not activated<br /> <br />
+						</div></td>
+				</tr>
+			</table>
+		</noscript>
+		<script>
+			//这些数据可以从后台数据库中读取
+			var settings = {};
+			settings["data[info_0].content"] = panoInfo;
+			//settings["skin_settings[skin].littleplanetintro"]="true";
+			embedpano({
+				swf : "tour.swf",
+				xml : "tour.xml",
+				target : "pano",
+				html5 : "auto",
+				vars : settings,//向xml文件传值，可用于初始化介绍字幕
+				mobilescale : 1.0,
+				passQueryParameters : true
+			});
+		</script>
+	</div>
+	<div id="sys"
+		style="position: fixed; position: absolute; bottom: 100px; z-index: 999; right: 600px; display: none">
+		<div>
+			<div style="background: #2894FF; line-height: 26px;">
+				<b>说一说</b><b id="close"
+					style="float: right; margin-top: -2px; width: 18px; cursor: pointer"
+					onclick="" title="关闭">&times;</b>
+			</div>
+			<div style="">
+				<textarea name="text" id="text" cols="30" rows="4"
+					onFocus="if(this.value == '请输入内容？'){this.value='';}">请输入内容？</textarea>
+			</div>
+			<div style="text-align: center; margin-top: -30px;">
+				<input id="fabu" type="submit" name="Submit" value="发表" onclick="">
+			</div>
+		</div>
+	</div>
+	<!-- <embed src="ren.mp3" id="mp" style="height: 0px; width: 0px;"
+		autostart="false" loop="true"> -->
+	<audio id="mp" src="" style="height: 0px; width: 0px;"></audio>
+	<script type="text/javascript">
+		document.getElementById("mp").src = music_path;
+	</script>
+	<!-- JiaThis Button BEGIN -->
+	<script type="text/javascript"
+		src="http://v3.jiathis.com/code/jiathis_r.js?type=left&amp;move=0"
+		charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</body>
+</html>

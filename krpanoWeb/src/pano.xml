@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="pano" extends="struts-default,json-default">
+		<action name="GetAllPano" method="getAllPano"
+			class="org.krpanoweb.actionprogram.PanoAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">allPanosJsonString</param>
+			</result>
+		</action>
+		<action name="GetUserAllPano" method="gerUsersAllPanos"
+			class="org.krpanoweb.actionprogram.PanoAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">userAllPanosJsonString</param>
+			</result>
+		</action>
+		<action name="GetUserAllSavePanos" method="getUsersAllSavePanos"
+			class="org.krpanoweb.actionprogram.PanoAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">userAllSavePanoJsonString</param>
+			</result>
+		</action>
+		<action name="GetPanoById" method="getPanoById"
+			class="org.krpanoweb.actionprogram.PanoAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">onePanoJsonString</param>
+			</result>
+		</action>
+		<action name="GetMusicById" method="getMusicById"
+			class="org.krpanoweb.actionprogram.PanoAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">panoMusic</param>
+			</result>
+		</action>
+		<action name="GetViewNum" method="getViewNum"
+			class="org.krpanoweb.actionprogram.PluginAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">viewNumJsonString</param>
+			</result>
+		</action>
+		<action name="GetLoveNum" method="getLoveNum"
+			class="org.krpanoweb.actionprogram.PluginAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">loveNumJsonString</param>
+			</result>
+		</action>
+		<action name="AddAgree" method="addAgree"
+			class="org.krpanoweb.actionprogram.PluginAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">loveNumAfterChange</param>
+			</result>
+		</action>
+		<action name="GetAllComments" method="getAllComment"
+			class="org.krpanoweb.actionprogram.PluginAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">allComments</param>
+			</result>
+		</action>
+		<action name="AddComment" method="addComment"
+			class="org.krpanoweb.actionprogram.PluginAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">addCommentResult</param>
+			</result>
+		</action>
+	</package>
+</struts>

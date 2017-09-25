@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/items.css">
+<!-- 定义进度条样式半透明 -->
+<link rel="stylesheet" href="css/progress.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 图表绘制 -->
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+<!-- 瀑布流显示 -->
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/panohelp.js"></script>
+<title>个人管理中心-我的主页</title>
+</head>
+<body id="bg" style="background-image: url(img/content/dotted.png)">
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<!--灰色遮罩层 begin-->
+	<div class="floatLayer" style="display: none" id="greypage">
+		<img src="img/loading.gif"
+			style="position: fixed; left: 50%; top: 50%; margin-left: -16px; margin-top: -16px" />
+	</div>
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>已发布全景</h3>
+				<h5>
+					共发布全景数量：<b id="number">6</b> &nbsp;&nbsp;&nbsp;&nbsp;<a
+						class="btn btn-primary" onclick="sortByTime()">按发布时间排序</a>
+				</h5>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+		<div class="row" id="content">
+
+			<div class="demo clearfix" style="margin-top: 50px;">
+				<!-- <div class="item_list infinite_scroll" id="content"></div> -->
+			</div>
+		</div>
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">准备删除的全景编号</h4>
+						<h4 class="modal-title" id="modaltitle"></h4>
+					</div>
+					<div class="modal-body">全景删除后不可恢复，确认要删除吗?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" id="confirmbtn"
+							onclick="confirmDelete()" data-dismiss="">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>-->
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<script type="text/javascript">
+		//alert("username:" + username);
+		//这里应该为获取用户发布的全景，而非全部的全景
+		//var data = get_all_pano();//这个不行？？？？function中写出了data_return = d;
+		var data = get_user_all_pano(username);
+		//alert("data=" + data);
+		var res = eval('(' + data + ')');
+		document.getElementById("number").innerHTML = res.length;
+		//alert("res[0].info = " + res.length);
+		var strVar = "";
+		var tmp = 666;
+		for ( var i = 0; i < res.length; i++) {
+			//var height = Math.random() * 60 + 220;
+			//alert("height=" + height);
+			strVar += "<div class=\"col-md-3 col-sm-3\">\n";
+			strVar += "	<div class=\"item masonry_brick\">\n";
+			strVar += "				<div class=\"item_t\">\n";
+			strVar += "					<div class=\"img\">\n";
+			strVar += "						<a href=\""+res[i].pano_path+"\"><img\n";
+strVar += "							width=\"210\" height=\""+"280"+"\" alt=\"漂亮的全景图\"\n";
+strVar += "							src=\""+res[i].cover_img+"\" /><\/a>\n";
+			strVar += "						<!--  <span class=\"price\">￥195.00<\/span>-->\n";
+			strVar += "						<div class=\"btns\">\n";
+			strVar += "							<a  class=\"img_album_btn\" id='"
+					+ res[i].pano_id + "'onclick=panoSave('" + res[i].pano_id
+					+ "')>加入收藏<\/a>\n";
+			strVar += "						<\/div>\n";
+			strVar += "					<\/div>\n";
+			strVar += "					<div class=\"title\" align=\"center\">\n";
+			strVar += "						<span>" + res[i].pano_name + "<\/span>\n";
+			strVar += "					<\/div>\n";
+			strVar += "				<\/div>\n";
+			strVar += "				<div class=\"item_b clearfix\">\n";
+			strVar += "					<div class=\"items_likes fl\">\n";
+			strVar += "						<span>" + res[i].fabu_time + "<\/span>\n";
+			strVar += "					<\/div>\n";
+			strVar += "					<div class=\"items_comment fr\">\n";
+			strVar += "						<a class=\"btn btn-success\" onclick=deletePano('"
+					+ res[i].pano_id + "')>删除</a>\n";
+			strVar += "					<\/div>\n";
+			strVar += "				<\/div>\n";
+			strVar += "			<\/div>\n";
+			strVar += "			<\/div>\n";
+			strVar += "			<!--item end-->\n";
+		}
+		document.getElementById("content").innerHTML = strVar;
+		function deletePano(pano_id) {
+			var title = document.getElementById("modaltitle");
+			title.innerHTML = pano_id;
+			$('#myModal').modal('show');
+		}
+		function confirmDelete() {
+			var title = document.getElementById("modaltitle");
+			//alert("pano_id=" + title.innerHTML + " username:" + username);
+			//与后台交互，删除pano_id对应的全景
+			document.getElementById("greypage").style.display = "block";
+			var pano_id = title.innerHTML;
+			$.when(deleteFabu(username, pano_id)).done(function(data) {
+				var d = eval("(" + data + ")");
+				//alert("d.status=" + d.status);
+				location.reload();
+				document.getElementById("greypage").style.display = "none";
+			});
+		}
+		var clicknum = 0;
+		function sortByTime() {
+			if (clicknum % 2 == 0) {//降序
+				document.getElementById("number").innerHTML = res.length;
+				//alert("res[0].info = " + res.length);
+				var strVar = "";
+				for ( var i = res.length - 1; i >= 0; i--) {
+					//var height = Math.random() * 60 + 220;
+					//alert("height=" + height);
+					strVar += "<div class=\"col-md-3 col-sm-3\">\n";
+					strVar += "	<div class=\"item masonry_brick\">\n";
+					strVar += "				<div class=\"item_t\">\n";
+					strVar += "					<div class=\"img\">\n";
+					strVar += "						<a href=\""+res[i].pano_path+"\"><img\n";
+		strVar += "							width=\"210\" height=\""+"280"+"\" alt=\"漂亮的全景图\"\n";
+		strVar += "							src=\""+res[i].cover_img+"\" /><\/a>\n";
+					strVar += "						<!--  <span class=\"price\">￥195.00<\/span>-->\n";
+					strVar += "						<div class=\"btns\">\n";
+					strVar += "							<a  class=\"img_album_btn\" id='"
+							+ res[i].pano_id + "'onclick=panoSave('"
+							+ res[i].pano_id + "')>加入收藏<\/a>\n";
+					strVar += "						<\/div>\n";
+					strVar += "					<\/div>\n";
+					strVar += "					<div class=\"title\" align=\"center\">\n";
+					strVar += "						<span>" + res[i].pano_name + "<\/span>\n";
+					strVar += "					<\/div>\n";
+					strVar += "				<\/div>\n";
+					strVar += "				<div class=\"item_b clearfix\">\n";
+					strVar += "					<div class=\"items_likes fl\">\n";
+					strVar += "						<span>" + res[i].fabu_time + "<\/span>\n";
+					strVar += "					<\/div>\n";
+					strVar += "					<div class=\"items_comment fr\">\n";
+					strVar += "						<a class=\"btn btn-success\" onclick=deletePano('"
+							+ res[i].pano_id + "')>删除</a>\n";
+					strVar += "					<\/div>\n";
+					strVar += "				<\/div>\n";
+					strVar += "			<\/div>\n";
+					strVar += "			<\/div>\n";
+					strVar += "			<!--item end-->\n";
+				}
+				document.getElementById("content").innerHTML = strVar;
+				clicknum++;
+			} else {//升序
+				document.getElementById("number").innerHTML = res.length;
+				//alert("res[0].info = " + res.length);
+				var strVar = "";
+				for ( var i = 0; i < res.length; i++) {
+					//var height = Math.random() * 60 + 220;
+					//alert("height=" + height);
+					strVar += "<div class=\"col-md-3 col-sm-3\">\n";
+					strVar += "	<div class=\"item masonry_brick\">\n";
+					strVar += "				<div class=\"item_t\">\n";
+					strVar += "					<div class=\"img\">\n";
+					strVar += "						<a href=\""+res[i].pano_path+"\"><img\n";
+		strVar += "							width=\"210\" height=\""+"280"+"\" alt=\"漂亮的全景图\"\n";
+		strVar += "							src=\""+res[i].cover_img+"\" /><\/a>\n";
+					strVar += "						<!--  <span class=\"price\">￥195.00<\/span>-->\n";
+					strVar += "						<div class=\"btns\">\n";
+					strVar += "							<a  class=\"img_album_btn\" id='"
+							+ res[i].pano_id + "'onclick=panoSave('"
+							+ res[i].pano_id + "')>加入收藏<\/a>\n";
+					strVar += "						<\/div>\n";
+					strVar += "					<\/div>\n";
+					strVar += "					<div class=\"title\" align=\"center\">\n";
+					strVar += "						<span>" + res[i].pano_name + "<\/span>\n";
+					strVar += "					<\/div>\n";
+					strVar += "				<\/div>\n";
+					strVar += "				<div class=\"item_b clearfix\">\n";
+					strVar += "					<div class=\"items_likes fl\">\n";
+					strVar += "						<span>" + res[i].fabu_time + "<\/span>\n";
+					strVar += "					<\/div>\n";
+					strVar += "					<div class=\"items_comment fr\">\n";
+					strVar += "						<a class=\"btn btn-success\" onclick=deletePano('"
+							+ res[i].pano_id + "')>删除</a>\n";
+					strVar += "					<\/div>\n";
+					strVar += "				<\/div>\n";
+					strVar += "			<\/div>\n";
+					strVar += "			<\/div>\n";
+					strVar += "			<!--item end-->\n";
+				}
+				document.getElementById("content").innerHTML = strVar;
+				clicknum++;
+			}
+
+		}
+	</script>
+</body>
+</html>

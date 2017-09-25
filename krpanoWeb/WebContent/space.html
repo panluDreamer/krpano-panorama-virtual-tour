@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 图表绘制 -->
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+<title>个人管理中心-我的主页</title>
+</head>
+<body id="bg" style="background-image: url(img/content/dotted.png)">
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>空间使用量</h3>
+				<h5>发布全景最大空间为：150MB,素材库最大可用空间为:100MB</h5>
+				<h5 id="tips">全景已用空间90MB,素材库已用空间10MB</h5>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+		<div class="row">
+
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">全景空间占有量</div>
+					<div class="panel-body">
+						<div id="pano_space"></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">素材库空间占有量</div>
+					<div class="panel-body">
+						<div id="sucai_space"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>-->
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<script type="text/javascript">
+		//alert("username:" + username);
+		//从后台服务器获取空间数据
+		var d = getUserSpace(username);
+		var data = eval('(' + d + ')');
+		var panoSpace = data.panoSpace / 1024 / 1024;
+		var sucaiSpace = (data.imageSpace + data.musicSpace) / 1024 / 1024;//B-->MB
+		//alert("panoSpace=" + panoSpace.toFixed(2) + " sucaiSpace="
+		//	+ sucaiSpace.toFixed(2));
+		var panoused = panoSpace.toFixed(2) / 150 * 100;
+		var panoremain = 100 - panoused;
+		var sucaiused = sucaiSpace;
+		var sucairemain = 100 - sucaiused;
+		document.getElementById("tips").innerHTML = "全景已用空间" + panoSpace
+				+ "MB,素材库已用空间" + sucaiused + "MB";
+		var panoUse = [ [ '已用空间', panoused ], [ '剩余空间', panoremain ] ];
+		var sucaiUse = [ [ '已用空间', sucaiused ], [ '剩余空间', sucairemain ] ];
+		$(function() {
+			$('#pano_space')
+					.highcharts(
+							{
+								chart : {
+									plotBackgroundColor : null,
+									plotBorderWidth : null,
+									plotShadow : false
+								},
+								title : {
+									text : '全景空间大小占比'
+								},
+								tooltip : {
+									headerFormat : '{series.name}<br>',
+									pointFormat : '{point.name}: <b>{point.percentage:.1f}%</b>'
+								},
+								plotOptions : {
+									pie : {
+										allowPointSelect : true,
+										cursor : 'pointer',
+										dataLabels : {
+											enabled : false
+										},
+										showInLegend : true
+									}
+								},
+								colors : [ '#058DC7', '#50B432', '#ED561B',
+										'#DDDF00', '#24CBE5', '#64E572',
+										'#FF9655', '#FFF263', '#6AF9C4' ],
+								series : [ {
+									type : 'pie',
+									name : '全景空间大小占比',
+									data : panoUse
+								} ]
+							});
+		});
+		$(function() {
+			$('#sucai_space')
+					.highcharts(
+							{
+								chart : {
+									plotBackgroundColor : null,
+									plotBorderWidth : null,
+									plotShadow : false
+								},
+								title : {
+									text : '素材空间大小占比'
+								},
+								tooltip : {
+									headerFormat : '{series.name}<br>',
+									pointFormat : '{point.name}: <b>{point.percentage:.1f}%</b>'
+								},
+								plotOptions : {
+									pie : {
+										allowPointSelect : true,
+										cursor : 'pointer',
+										dataLabels : {
+											enabled : false
+										},
+										showInLegend : true
+									}
+								},
+								colors : [ '#058DC7', '#50B432', '#ED561B',
+										'#DDDF00', '#24CBE5', '#64E572',
+										'#FF9655', '#FFF263', '#6AF9C4' ],
+								series : [ {
+									type : 'pie',
+									name : '素材空间大小占比',
+									data : sucaiUse
+								} ]
+							});
+		});
+	</script>
+</body>
+</html>

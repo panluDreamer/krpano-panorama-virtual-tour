@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<!-- 为什么这个不行，但是testtable.html可以 -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>个人管理中心-全景编辑</title>
+<!-- BOOTSTRAP STYLES-->
+<link href="css/bootstrap.css" rel="stylesheet" />
+
+<!-- TABLE STYLES-->
+<link href="js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/items.css">
+<!-- 定义进度条样式半透明 -->
+<link rel="stylesheet" href="css/progress.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 图表绘制 -->
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+<!-- 瀑布流显示 -->
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/panohelp.js"></script>
+<!-- datatable -->
+<link rel="stylesheet" href="js/dataTables/dataTables.bootstrap.css">
+<script type="text/javascript" src="js/dataTables/jquery.dataTables.js"></script>
+<!-- Ajax文件上传 -->
+<script type="text/javascript" src="js/ajaxfileupload.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<!--灰色遮罩层 begin-->
+	<div class="floatLayer" style="display: none" id="greypage">
+		<img src="img/loading.gif"
+			style="position: fixed; left: 50%; top: 50%; margin-left: -16px; margin-top: -16px" />
+	</div>
+	<!-- /. NAV SIDE  -->
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>全景编辑</h2>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Advanced Tables -->
+				<div class="panel panel-default">
+					<div class="panel-heading">全景列表</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover"
+								id="dataTables-example">
+								<thead>
+									<tr>
+										<th>全景ID</th>
+										<th>全景标题</th>
+										<th>封面图片</th>
+										<th>背景音乐</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="table">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!--End Advanced Tables -->
+			</div>
+		</div>
+		<div class="modal fade" id="jianjieEdit" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">更改全景标题、类型、字幕简介</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							全景ID:
+							<p id="pano_id"></p>
+						</div>
+						<div>
+							全景名字：<input type="text" id="pano_name" class="form-control" />
+						</div>
+						<div>
+							全景简介：<input type="text" id="pano_info" class="form-control"
+								value="国家游泳中心又称“水立方”(Water Cube),位于北京奥林匹克公园内，是北京为2008年夏季奥运会修建的主游泳馆，也是2008年北京奥运会标志性建筑物之一。" />
+						</div>
+						<div>
+							全景类型：<input type="text" id="pano_type" class="form-control" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							onclick="panoEdit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="coverImg" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">更改全景封面图片</h4>
+						<h4 class="modal-title" id="modaltitle"></h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							全景ID:
+							<p id="img_pano_id"></p>
+						</div>
+						<div>
+							当前封面图片: <img id="curr_cover_img" width="60px" height="60px"
+								src=""></img>
+						</div>
+						<hr />
+						<div>
+							<a class="btn btn-success" onclick="sucaiku()">从素材库选取</a>&nbsp;&nbsp;&nbsp;&nbsp;<a
+								class="btn btn-success" onclick="fileselect()">上传新图片</a>
+						</div>
+						<hr />
+						<div class="form-group" style="display: none" id="img_radio">
+						</div>
+						<div class="form-group" id="img_fileinput" style="display: none">
+							<label>选择新图片</label> <input id="fileToUpload" type="file"
+								name="fileToUpload" class="input" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							onclick="confirmImgEdit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal fade" id="musicModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">更改全景漫游背景音乐</h4>
+						<h4 class="modal-title" id="modaltitle"></h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							全景ID:
+							<p id="music_pano_id"></p>
+						</div>
+						<div>
+							当前背景音乐: <b id="curr_music">人民的名义.mp3</b>
+						</div>
+						<hr />
+						<div>
+							<a class="btn btn-success" onclick="music_sucaiku()">从素材库选取</a>&nbsp;&nbsp;&nbsp;&nbsp;<a
+								class="btn btn-success" onclick="music_fileselect()">上传新音乐</a>
+						</div>
+						<hr />
+						<div class="form-group" style="display: none" id="music_radio">
+						</div>
+						<div class="form-group" id="music_fileinput" style="display: none">
+							<label>选择新音乐</label> <input id="MusicFileToUpload" type="file"
+								name="MusicFileToUpload" class="input" />
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							onclick="confirmMusicEdit()">提交更改</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+	<!-- JQUERY SCRIPTS -->
+	<!--  <script src="js/jquery-1.12.4.min.js"></script>-->
+	<!-- BOOTSTRAP SCRIPTS -->
+	<!-- <script src="js/bootstrap.min.js"></script> -->
+	<!-- DATA TABLE SCRIPTS -->
+	<script src="js/dataTables/jquery.dataTables.js"></script>
+	<script src="js/dataTables/dataTables.bootstrap.js"></script>
+	<script>
+		//加载表格数据
+		var allpano_temp = get_user_all_pano(username);
+		var allpano = eval("(" + allpano_temp + ")");
+		//与后台交互
+		var table = document.getElementById("table");
+		var HTMLstr = "";
+		for ( var i = 0; i < allpano.length; i++) {
+			HTMLstr += "<tr class=\"gradeA\">"
+					+ "<td>"
+					+ allpano[i].pano_id
+					+ "</td>"
+					+ "<td>"
+					+ allpano[i].pano_name
+					+ "</td>"
+					+ "<td><img width=\"60px\" height=\"60px\"src=\""+allpano[i].cover_img+"\"></img></td>"
+					+ "<td class=\"center\">"
+					+ allpano[i].background_music_name
+					+ "</td>"
+					+ "<td>&nbsp;&nbsp;&nbsp;<a class=\"btn btn-primary\" onclick=\"jianjieEdit(this)\">简介编辑</a>"
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"btn btn-success\" onclick=\"coverImgEdit(this)\">封面图片更改</a>"
+					+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"btn btn-danger\" onclick=\"musicEdit(this)\">背景音乐更改</a>"
+					+ "</td></tr>";
+		}
+		table.innerHTML = HTMLstr;
+
+		var sucai_image_temp = getUserAllImage(username);
+		var sucai_image = eval("(" + sucai_image_temp + ")");
+		var sucai_radio = document.getElementById("img_radio");
+		var radioHTML = "<label>图片库选取</label>";
+
+		for ( var id = 0; id < sucai_image.length; id++) {
+			radioHTML += "<div class=\"radio\">"
+					+ "<label> <input type=\"radio\" name=\"optionsRadios\""
+				     +"id=\""+id+"\" value=\"option"+id+"\" /><img alt=\"素材库\""
+				     +"src=\""+sucai_image[id].imagePath+"\""
+				     +"width=\"40px\" height=\"40px\"></label></div>";
+		}
+		sucai_radio.innerHTML = radioHTML;
+
+		var sucai_music_temp = getUserAllMusic(username);
+		var sucai_music = eval("(" + sucai_music_temp + ")");
+		var music_radio = document.getElementById("music_radio");
+		var music_radioHTML = "<label>音乐库选取</label>";
+		for ( var id = 0; id < sucai_music.length; id++) {
+			music_radioHTML += "<div class=\"radio\">"
+					+ "<label> <input type=\"radio\" name=\"optionsRadios\""
+			     +"id=\""+id+"\" value=\"option"+id+"\" />"
+					+ "<b>" + sucai_music[id].musicName + "</b>"
+					+ "</label></div>";
+		}
+		music_radio.innerHTML = music_radioHTML;
+		$(document).ready(function() {
+			$('#dataTables-example').dataTable();
+		});
+		function jianjieEdit(node) {
+			var tr = node.parentNode.parentNode;
+			var panoId = tr.cells[0].innerHTML;
+			document.getElementById("pano_id").innerHTML = panoId;
+			var ans = -1;
+			for ( var i = 0; i < allpano.length; i++) {
+				if (allpano[i].pano_id == panoId) {
+					ans = i;
+					break;
+				}
+			}
+			//alert("ans = " + ans);
+			document.getElementById("pano_name").value = allpano[ans].pano_name;
+			document.getElementById("pano_info").value = allpano[ans].info;
+			document.getElementById("pano_type").value = allpano[ans].pano_type;
+			$('#jianjieEdit').modal('show');
+		}
+		function coverImgEdit(node) {
+			var tr = node.parentNode.parentNode;
+			//alert("封面图片更改:" + tr.cells[0].innerHTML);
+			document.getElementById("img_pano_id").innerHTML = tr.cells[0].innerHTML;
+			var panoId = tr.cells[0].innerHTML;
+			//document.getElementById("pano_id").innerHTML = panoId;
+			var ans = -1;
+			for ( var i = 0; i < allpano.length; i++) {
+				if (allpano[i].pano_id == panoId) {
+					ans = i;
+					break;
+				}
+			}
+			//alert("ans = " + ans);
+			document.getElementById("curr_cover_img").src = allpano[ans].cover_img;
+			$('#coverImg').modal('show');
+		}
+		function musicEdit(node) {
+			var tr = node.parentNode.parentNode;
+			document.getElementById("music_pano_id").innerHTML = tr.cells[0].innerHTML;
+			var panoId = tr.cells[0].innerHTML;
+			//document.getElementById("pano_id").innerHTML = panoId;
+			var ans = -1;
+			for ( var i = 0; i < allpano.length; i++) {
+				if (allpano[i].pano_id == panoId) {
+					ans = i;
+					break;
+				}
+			}
+			//alert("ans = " + ans);
+			document.getElementById("curr_music").innerHTML = allpano[ans].background_music_name;
+			$('#musicModal').modal('show');
+		}
+		function panoEdit() {
+			var pano_id = document.getElementById("pano_id").innerHTML;
+			var new_pano_name = document.getElementById("pano_name").value;
+			var new_pano_info = document.getElementById("pano_info").value;
+			var new_pano_type = document.getElementById("pano_type").value;
+			//alert("提交更改，新信息为：new_pano_name=" + new_pano_name
+			//		+ " new_pano_info=" + new_pano_info + " new_pano_type="
+			//		+ new_pano_type);
+			document.getElementById("greypage").style.display = "block";
+			//请求服务器，更新全景信息
+			$.when(
+					modifyPanoInfo(pano_id, new_pano_name, new_pano_info,
+							new_pano_type)).done(function(data) {
+				var res = eval("(" + data + ")");
+				//alert("res.status:" + res.status);
+				location.reload();
+				document.getElementById("greypage").style.display = "none";
+			});
+
+		}
+		function confirmImgEdit() {
+			var pano_id = document.getElementById("img_pano_id").innerHTML;
+			var status1 = document.getElementById("img_radio").style.display;
+			var status2 = document.getElementById("img_fileinput").style.display;
+			//	alert("status1=" + status1 + "  status2=" + status2);
+			if (status1 == "block" && status2 == "none") {//图片库选择
+				var group1 = $("[name='optionsRadios']").filter(":checked");
+				var selectedId = group1.attr("id");
+				//alert("使用了图片库 选择ID：" + selectedId);
+				document.getElementById("greypage").style.display = "block";
+				//alert("所选择的图片库图片路径为:" + sucai_image[selectedId]);
+				$
+						.when(
+								modifyImgByKu(pano_id,
+										sucai_image[selectedId].imagePath))
+						.done(
+								function(data) {
+									var r = eval("(" + data + ")");
+									//alert("r.status:" + r.status);
+									location.reload();
+									document.getElementById("greypage").style.display = "none";
+								});
+			} else if (status1 == "none" && status2 == "block") {
+				document.getElementById("greypage").style.display = "block";
+				fileup();//返回值存在问题，获取返回值
+				//alert("res=" + res);
+			}
+		}
+		function fileup() {
+			var pano_id = document.getElementById("img_pano_id").innerHTML;
+			$.ajaxFileUpload({
+				url : 'CoverImgUpload.servlet?username=' + username
+						+ '&&pano_id=' + pano_id,// servlet请求路径  
+				secureuri : false,
+				fileElementId : 'fileToUpload',// 上传控件的id  
+				dataType : 'text',//若这里为JSON，success方法不能回调???
+				data : {}, // 其它请求参数  
+				success : function(data) {
+					//if (data.msg) {
+					//alert(data);
+					//data = JQuery.parseJSON(JQuery(data).text());
+					//alert("data:" + data);
+					//alert("success data:" + data);
+					location.reload();
+					document.getElementById("greypage").style.display = "none";
+					//}
+				},
+				error : function(data, status, e) {
+					alert('上传出错');
+				}
+			});
+		}
+		function musicUp() {
+			var pano_id = document.getElementById("music_pano_id").innerHTML;
+			$.ajaxFileUpload({
+				url : 'MusicUpload.servlet?username=' + username + '&&pano_id='
+						+ pano_id,// servlet请求路径  
+				secureuri : false,
+				fileElementId : 'MusicFileToUpload',// 上传控件的id  
+				dataType : 'text',//若这里为JSON，success方法不能回调???
+				data : {}, // 其它请求参数  
+				success : function(data) {
+					//if (data.msg) {
+					//alert(data);
+					//data = JQuery.parseJSON(JQuery(data).text());
+					//alert("data:" + data);
+					//alert("success data:" + data);
+					location.reload();
+					document.getElementById("greypage").style.display = "none";
+					//}
+				},
+				error : function(data, status, e) {
+					alert('上传出错');
+				}
+			});
+
+		}
+		function confirmMusicEdit() {
+			var pano_id = document.getElementById("music_pano_id").innerHTML;
+			var status1 = document.getElementById("music_radio").style.display;
+			var status2 = document.getElementById("music_fileinput").style.display;
+			if (status1 == "block" && status2 == "none") {//音乐库选择
+				var group1 = $("[name='optionsRadios']").filter(":checked");
+				var selectedId = group1.attr("id");
+				//	alert("使用了音乐库 选择ID：" + selectedId + " 音乐路径为:"
+				//		+ sucai_music[selectedId].musicPath);
+
+				document.getElementById("greypage").style.display = "block";
+				//alert("所选择的图片库图片路径为:" + sucai_image[selectedId]);
+				$
+						.when(
+								modifyMusicByKu(pano_id,
+										sucai_music[selectedId].musicPath,
+										sucai_music[selectedId].musicName))
+						.done(
+								function(data) {
+									var r = eval("(" + data + ")");
+									//alert("r.status:" + r.status);
+									location.reload();
+									document.getElementById("greypage").style.display = "none";
+								});
+
+			} else if (status1 == "none" && status2 == "block") {
+				//alert("上传新音乐");
+				document.getElementById("greypage").style.display = "block";
+				musicUp();
+			}
+
+		}
+		function sucaiku() {
+			document.getElementById("img_radio").style.display = "block";
+			document.getElementById("img_fileinput").style.display = "none";
+		}
+		function fileselect() {
+			document.getElementById("img_radio").style.display = "none";
+			document.getElementById("img_fileinput").style.display = "block";
+		}
+		function music_sucaiku() {
+			document.getElementById("music_radio").style.display = "block";
+			document.getElementById("music_fileinput").style.display = "none";
+		}
+		function music_fileselect() {
+			document.getElementById("music_radio").style.display = "none";
+			document.getElementById("music_fileinput").style.display = "block";
+		}
+	</script>
+</body>
+</html>

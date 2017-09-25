@@ -1,0 +1,147 @@
+<krpano>
+	<events name="roll_title_event" keep="true"
+		onxmlcomplete="roll_title_onxmlcomplete();" onresize="roll_title_onresize();"
+		onnewpano="ifnot(roll_settings.control_yourself,roll_title_start());" />
+	<action name="roll_title_start">
+		ifnot(roll_settings.keep,txtadd(rollinfo,'info_',get(scene[get(xml.scene)].index));add_roll_title(get(rollinfo));
+		,
+		if(roll_settings.first,add_roll_title(info_0);set(roll_settings.first,false););
+		);
+	</action>
+	<action name="add_roll_title">
+		stoptween(layer[rolltitle].x);
+		stopdelayedcall(roll1); if(roll_settings.version == 118,
+		copy(speed,roll_settings.speed);
+		copy(interval_time,roll_settings.interval_time);
+		copy(rollbgalpha,roll_settings.bgalpha);
+		copy(rollbgcolor,roll_settings.bgcolor);
+		copy(rollbgborder,roll_settings.bgborder);
+		copy(rollheight,roll_settings.height); copy(rolly,roll_settings.y);
+		copy(rollparent,roll_settings.parent); if(device.mobile,
+		copy(speed,roll_settings.speed_mobile);
+		copy(interval_time,roll_settings.interval_time_mobile);
+		copy(rollbgalpha,roll_settings.bgalpha_mobile);
+		copy(rollbgcolor,roll_settings.bgcolor_mobile);
+		copy(rollbgborder,roll_settings.bgborder_mobile);
+		copy(rollheight,roll_settings.height_mobile);
+		copy(rolly,roll_settings.y_mobile);
+		copy(roll_settings.skin_x,roll_settings.skin_x_mobile); ) ,
+		copy(speed,roll_settings.speed);
+		copy(interval_time,roll_settings.interval_time);
+		copy(rollbgalpha,roll_settings.bgalpha);
+		copy(rollbgcolor,roll_settings.bgcolor);
+		copy(rollbgborder,roll_settings.bgborder);
+		copy(rollheight,roll_settings.height); copy(rolly,roll_settings.y); );
+		addlayer(rolltitlebackground);
+		set(layer[rolltitlebackground].type,container);
+		set(layer[rolltitlebackground].zorder,10);
+		set(layer[rolltitlebackground].bgalpha,get(rollbgalpha));
+		set(layer[rolltitlebackground].bgcolor,get(rollbgcolor));
+		set(layer[rolltitlebackground].align,get(roll_settings.align));
+		set(layer[rolltitlebackground].y,get(rolly));
+		set(layer[rolltitlebackground].height,get(rollheight));
+		set(layer[rolltitlebackground].parent,get(rollparent));
+		set(layer[rolltitlebackground].maskchildren,true);
+		copy(layer[rolltitlebackground].keep,roll_settings.keep);
+		if(roll_settings.default_skin,
+		set(layer[rolltitlebackground].parent,layer[skin_scroll_layer]);
+		set(layer[rolltitlebackground].edge,leftbottom);
+		if(skin_settings.title, if(title, addlayer(skin_title_piexlwidth);
+		set(layer[skin_title_piexlwidth].url,%SWFPATH%/plugins/textfield.swf);
+		set(layer[skin_title_piexlwidth].align,top);
+		set(layer[skin_title_piexlwidth].visible,false);
+		set(layer[skin_title_piexlwidth].keep,true);
+		set(layer[skin_title_piexlwidth].autowidth,true);
+		copy(layer[skin_title_piexlwidth].css,layer[skin_title].css); ); ); ,
+		if(roll_settings.version == 118, if(device.mobile,
+		copy(roll_settings.x,roll_settings.x_mobile);
+		copy(roll_settings.x_r,roll_settings.x_r_mobile); ); );
+		indexoftxt(check_x,get(roll_settings.x),'%');
+		indexoftxt(check_x_r,get(roll_settings.x_r),'%'); if(check_x GT 0 AND
+		check_x_r GT 0, mul(numa,roll_settings.x,0.01);
+		mul(numb,roll_settings.x_r,0.01); sub(rollwidth,1,numa);
+		sub(rollwidth,numb); mul(rollwidth,stagewidth)); if(check_x GT 0 AND
+		check_x_r LE 0, mul(numa,roll_settings.x,0.01); sub(rollwidth,1,numa);
+		mul(rollwidth,stagewidth); sub(rollwidth,roll_settings.x_r));
+		if(check_x LE 0 AND check_x_r GT 0, mul(numb,roll_settings.x_r,0.01);
+		sub(rollwidth,1,numb); mul(rollwidth,stagewidth);
+		sub(rollwidth,roll_settings.x)); if(check_x LE 0 AND check_x_r LE 0,
+		sub(rollwidth,stagewidth,roll_settings.x_r);
+		sub(rollwidth,roll_settings.x));
+		copy(layer[rolltitlebackground].width,rollwidth);
+		set(layer[rolltitlebackground].x,get(roll_settings.x)); );
+		removelayer(rolltitle); addlayer(rolltitle);
+		set(layer[rolltitle].url,%SWFPATH%/plugins/textfield.swf);
+		set(layer[rolltitle].visible,false); set(layer[rolltitle].zorder,16);
+		set(layer[rolltitle].background,false);
+		set(layer[rolltitle].autowidth,true);
+		set(layer[rolltitle].enabled,false);
+		set(layer[rolltitle].textshadow,1.0); set(layer[rolltitle].y,0);
+		set(layer[rolltitle].align,rightcenter); if(device.mobile,
+		set(layer[rolltitle].css,get(roll_settings.css_mobile)),
+		set(layer[rolltitle].css,get(roll_settings.css_normal)); );
+		if(roll_settings.default_skin, if(skin_settings.title,
+		copy(layer[rolltitle].css,layer[skin_title].css););
+		set(layer[rolltitle].align,rightbottom); );
+		set(layer[rolltitle].html,get(data[%1].content));
+		copy(layer[rolltitle].keep,roll_settings.keep);
+		set(layer[rolltitle].onautosized, sub(textwidth, 0,
+		layer[rolltitle].pixelwidth); set(layer[rolltitle].x,get(textwidth));
+		set(layer[rolltitle].visible,true);
+		set(layer[rolltitle].parent,layer[rolltitlebackground]);
+		rolltitleless(get(speed)); );
+	</action>
+	<action name="roll_title_onxmlcomplete">
+		if(roll_settings.default_skin,
+		if(skin_settings.title, if(title,
+		txtadd(layer[skin_title_piexlwidth].html, get(title), ' - ',
+		get(scene[get(xml.scene)].title) ); ,
+		copy(layer[skin_title_piexlwidth].html, scene[get(xml.scene)].title );
+		); set(layer[skin_title_piexlwidth].onautosized,
+		sub(layer[rolltitlebackground].width,layer[skin_scroll_layer].pixelwidth,layer[skin_title_piexlwidth].pixelwidth);
+		sub(layer[rolltitlebackground].width,layer[skin_title].x);
+		sub(layer[rolltitlebackground].width,roll_settings.skin_x);
+		add(layer[rolltitlebackground].x,layer[skin_title_piexlwidth].pixelwidth,layer[skin_title].x);
+		add(layer[rolltitlebackground].x,roll_settings.skin_x); ); ,
+		copy(layer[rolltitlebackground].width,layer[skin_scroll_window].width);
+		); );
+	</action>
+	<action name="roll_title_onresize">
+		wait(0.1); if(roll_settings.default_skin,
+		if(skin_settings.title,
+		sub(layer[rolltitlebackground].width,layer[skin_scroll_layer].pixelwidth,layer[skin_title_piexlwidth].pixelwidth);
+		sub(layer[rolltitlebackground].width,layer[skin_title].x);
+		sub(layer[rolltitlebackground].width,roll_settings.skin_x);
+		add(layer[rolltitlebackground].x,layer[skin_title_piexlwidth].pixelwidth,layer[skin_title].x);
+		add(layer[rolltitlebackground].x,roll_settings.skin_x); ,
+		copy(layer[rolltitlebackground].width,layer[skin_scroll_window].width);
+		); , indexoftxt(check_x,get(roll_settings.x),'%');
+		indexoftxt(check_x_r,get(roll_settings.x_r),'%'); if(check_x GT 0 AND
+		check_x_r GT 0, mul(numa,roll_settings.x,0.01);
+		mul(numb,roll_settings.x_r,0.01); sub(rollwidth,1,numa);
+		sub(rollwidth,numb); mul(rollwidth,stagewidth)); if(check_x GT 0 AND
+		check_x_r LE 0, mul(numa,roll_settings.x,0.01); sub(rollwidth,1,numa);
+		mul(rollwidth,stagewidth); sub(rollwidth,roll_settings.x_r));
+		if(check_x LE 0 AND check_x_r GT 0, mul(numb,roll_settings.x_r,0.01);
+		sub(rollwidth,1,numb); mul(rollwidth,stagewidth);
+		sub(rollwidth,roll_settings.x)); if(check_x LE 0 AND check_x_r LE 0,
+		sub(rollwidth,stagewidth,roll_settings.x_r);
+		sub(rollwidth,roll_settings.x));
+		copy(layer[rolltitlebackground].width,rollwidth);
+		set(layer[rolltitlebackground].x,get(roll_settings.x));
+		set(layer[rolltitlebackground].bgborder,get(rollbgborder)); );
+	</action>
+	<action name="rolltitleless">
+		if(roll_settings.default_skin, if(device.mobile,
+		copy(layer[rolltitlebackground].y,layer[skin_title].y);
+		add(layer[rolltitlebackground].height,layer[skin_title].pixelheight,20)
+		, copy(layer[rolltitlebackground].y,layer[skin_title].y);
+		add(layer[rolltitlebackground].height,layer[skin_title].pixelheight,20)
+		);); sub(textwidth2,0,layer[rolltitle].pixelwidth);
+		if(roll_settings.default_skin, layer[rolltitlebackground].updatepos();
+		tween(layer[rolltitle].x,get(layer[rolltitlebackground].pixelwidth),distance(%1,1),linear,copy(layer[rolltitle].x,textwidth2);delayedcall(roll1,get(interval_time),rolltitleless(%1)););
+		,
+		tween(layer[rolltitle].x,get(rollwidth),distance(%1,1),linear,copy(layer[rolltitle].x,textwidth2);delayedcall(roll1,get(interval_time),rolltitleless(%1)););
+		);
+	</action>
+</krpano>

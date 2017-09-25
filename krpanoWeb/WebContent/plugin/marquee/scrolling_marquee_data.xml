@@ -1,0 +1,20 @@
+
+<krpano>
+
+
+	<roll_settings parent="pano" version="119" default_skin="false"
+		keep="true" control_yourself="false" align="lefttop" speed="60"
+		speed_mobile="30" interval_time="2" interval_time_mobile="2" bgalpha="0"
+		bgalpha_mobile="0" bgcolor="0x000000" bgcolor_mobile="0x000000"
+		bgborder="10 0xAAAAAA 0" bgborder_mobile="10 0xAAAAAA 0" height="30"
+		height_mobile="20" y="0" y_mobile="0" x="0" x_mobile="0" x_r="0"
+		x_r_mobile="0"
+		css_normal="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:25px;"
+		css_mobile="text-align:center; color:#FFFFFF; font-family:Arial; font-weight:bold; font-size:14px;"
+		skin_x="5" skin_x_mobile="5" first="true" />
+
+
+	<data name="info_0">
+
+	</data>
+</krpano>

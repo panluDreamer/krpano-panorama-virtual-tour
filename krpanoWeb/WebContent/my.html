@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<title>个人管理中心-我的主页</title>
+</head>
+<body id="bg" style="background-image: url(img/content/dotted.png)">
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h3>我的信息</h3>
+				<h5 id="welcome-info"></h5>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+		<div class="col-md-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">账号信息</div>
+				<div class="panel-body" id="userinfo"></div>
+			</div>
+		</div>
+
+	</div>
+
+	<!--  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>-->
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<script type="text/javascript">
+		document.getElementById("welcome-info").innerHTML = "Welcome "
+				+ username + ", Love to see you back.";
+		//alert("username:" + username);
+		$.when(getUserInfo(username)).done(
+				function(data) {
+					var userdata = eval("(" + data + ")");
+					var userinfo = document.getElementById("userinfo");
+					var password = userdata.password;
+					var mail = userdata.mail;
+					var telephone = userdata.telephone;
+					var htmlVar = "<h5><strong>用户名</strong></h5>"
+							+ "<div class=\"alert alert-info\">" + username
+							+ "</div>" + "<h5><strong>密码</strong></h5>"
+							+ "<div class=\"alert alert-info\">" + password
+							+ "</div>" + "<h5><strong>个人邮箱</strong></h5>"
+							+ "<div class=\"alert alert-info\">" + mail
+							+ "</div>" + "<h5><strong>个人电话</strong></h5>"
+							+ "<div class=\"alert alert-info\">" + telephone
+							+ "</div>";
+					userinfo.innerHTML = htmlVar;
+				});
+	</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="user" extends="struts-default,json-default">
+		<action name="Login" method="login"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">loginResult</param>
+			</result>
+		</action>
+		<action name="Register" method="register"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">registResult </param>
+			</result>
+		</action>
+		<action name="Produce" method="produce" class="upload.ProducePano">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">produceResult </param>
+			</result>
+		</action>
+		<action name="Logout" method="logout"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">logoutResult </param>
+			</result>
+		</action>
+		<action name="GetCurrUser" method="getCurrLoginUser"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">currentLoginUser</param>
+			</result>
+		</action>
+		<action name="SavePano" method="savePano"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">savePanoStatus</param>
+			</result>
+		</action>
+		<action name="DeleteSavePano" method="deleteUserSave"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">deleteSavePanosString</param>
+			</result>
+		</action>
+
+		<action name="DeleteFabuPano" method="deleteUserFabu"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">deleteFabuResult</param>
+			</result>
+		</action>
+		<action name="GetUserAllSave" method="getAllSavePanos"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">userAllSavePanos</param>
+			</result>
+		</action>
+		<action name="GetUserInfo" method="getUsersInfo"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">userInfo</param>
+			</result>
+		</action>
+		<action name="GetUserSpace" method="getSpaceByUsername"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">userSpaceJsonString</param>
+			</result>
+		</action>
+		<action name="GetUsersAllImg" method="getAllImagesByUsername"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">allImages</param>
+			</result>
+		</action>
+
+		<action name="GetAllMusicsByUsername" method="getuserAllMusics"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">allMusics</param>
+			</result>
+		</action>
+
+		<action name="GetUserPanosComments" method="getAllUserPanosCmt"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">allComments</param>
+			</result>
+		</action>
+		<action name="Search" method="searchPanorama"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">searchResult</param>
+			</result>
+		</action>
+		<action name="ModifyPano" method="modifyUserPanos"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">modifyStatus</param>
+			</result>
+		</action>
+		<action name="ModifyImageByKu" method="modifyImagesByKu"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">modifyImageKu</param>
+			</result>
+		</action>
+		<action name="ModifyMusicByKu" method="modifyMusicsByKu"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">modifyMusicKu</param>
+			</result>
+		</action>
+
+
+		<action name="DeleteCoverImg" method="deleteCoverImgByName"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">imageDatabaseDelete</param>
+			</result>
+		</action>
+
+		<action name="DeleteMusic" method="deleteBGMusicByName"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">musicDatabaseDelete</param>
+			</result>
+		</action>
+		
+		<action name="DeleteComment" method="deleteCommentByCommentID"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">commentDelete</param>
+			</result>
+		</action>
+		
+		<action name="GetUserLoveInfo" method="getUserLoveDetail"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">loveDetailInfo</param>
+			</result>
+		</action>
+		<action name="EditPassWord" method="editUserPassWord"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<result name="fail"></result>
+			<!-- <result name="SUCCESS">test.html</result> -->
+			<!-- 返回json类型数据 -->
+			<result type="json">
+				<param name="root">passwordEdit</param>
+			</result>
+		</action>
+	</package>
+</struts>

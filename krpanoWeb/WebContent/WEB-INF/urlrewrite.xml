@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE urlrewrite
+    PUBLIC "-//tuckey.org//DTD UrlRewrite 4.0//EN"
+    "http://www.tuckey.org/res/dtds/urlrewrite4.0.dtd">
+
+<urlrewrite>
+	<rule>
+		<from>/page/(.*).html</from>
+		<to>/urltest.jsp?page=$1</to>
+	</rule>
+	<!-- <rule> <name>World Rule</name> <from>^/user/([a-z]+)/([0-9]+)$</from> 
+		<to>/urltest.jsp?page=$1&amp;tourid=$2</to> </rule> -->
+	<rule>
+		<from>^/tour/([0-9a-zA-Z]+)/pano_id=([0-9a-zA-Z]+)$</from><!-- 匹配问题 -->
+		<!-- <to>/urltest.jsp?page=$1&amp;tourid=$2</to> -->
+		<!-- <to>/user/$1/$2/vtour/tour.html?username=$1&amp;id=$2</to> --><!-- 这是正确的，下面统一到一个界面 -->
+		<to>/showpanorama.html</to>
+		<!-- <to>/login.html</to> -->
+	</rule>
+	<rule>
+		<from>^/vtours/([a-z]+)/pano_id=([0-9]+)$</from>
+		<to>/urltest.jsp?nickname=$1&amp;tourid=$2</to>
+	</rule>
+
+</urlrewrite>

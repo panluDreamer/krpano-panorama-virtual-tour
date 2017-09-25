@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<!-- 为什么这个不行，但是testtable.html可以 -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>个人管理中心-点赞消息</title>
+<!-- BOOTSTRAP STYLES-->
+<link href="css/bootstrap.css" rel="stylesheet" />
+
+<!-- TABLE STYLES-->
+<link href="js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/items.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 图表绘制 -->
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+<!-- 瀑布流显示 -->
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/panohelp.js"></script>
+<!-- datatable -->
+<link rel="stylesheet" href="js/dataTables/dataTables.bootstrap.css">
+<script type="text/javascript" src="js/dataTables/jquery.dataTables.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<!-- /. NAV SIDE  -->
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>点赞消息</h2>
+				<h5>
+					&nbsp;已发布的全景共获得<b id="lovenum">200</b>次点赞
+				</h5>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Advanced Tables -->
+				<div class="panel panel-default">
+					<div class="panel-heading">消息列表</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover"
+								id="dataTables-example">
+								<thead>
+									<tr>
+										<th>点赞ID</th>
+										<th>点赞用户</th>
+										<th>全景ID</th>
+										<th>点赞时间</th>
+									</tr>
+								</thead>
+								<tbody id="table">
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!--End Advanced Tables -->
+			</div>
+		</div>
+
+	</div>
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+	<!-- JQUERY SCRIPTS -->
+	<!--  <script src="js/jquery-1.12.4.min.js"></script>-->
+	<!-- BOOTSTRAP SCRIPTS -->
+	<!-- <script src="js/bootstrap.min.js"></script> -->
+	<!-- DATA TABLE SCRIPTS -->
+	<script src="js/dataTables/jquery.dataTables.js"></script>
+	<script src="js/dataTables/dataTables.bootstrap.js"></script>
+	<script>
+		//加载表格数据
+		//与后台交互
+		var temp_res = getUserPanoLoveInfo(username);
+		var res = eval("(" + temp_res + ")");
+		document.getElementById("lovenum").innerHTML = res.length;
+		var table = document.getElementById("table");
+		var HTMLstr = "";
+		for ( var i = 0; i < res.length; i++) {
+			HTMLstr += "<tr class=\"gradeA\">" + "<td>" + res[i].id + "</td>"
+					+ "<td>" + res[i].username + "</td>"
+					+ "<td><a href=\""+res[i].pano_path+"\">" + res[i].pano_id
+					+ "</a></td>" + "<td class=\"center\">" + res[i].love_time
+					+ "</td></tr>";
+		}
+		table.innerHTML = HTMLstr;
+		$(document).ready(function() {
+			$('#dataTables-example').dataTable();
+		});
+	</script>
+
+</body>
+</html>

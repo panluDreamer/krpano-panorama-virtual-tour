@@ -1,0 +1,186 @@
+﻿<!DOCTYPE html>
+<!-- 为什么这个不行，但是testtable.html可以 -->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>个人管理中心-背景音乐库</title>
+<!-- BOOTSTRAP STYLES-->
+<link href="css/bootstrap.css" rel="stylesheet" />
+
+<!-- TABLE STYLES-->
+<link href="js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/my.css">
+<link rel="stylesheet" href="css/items.css">
+<!-- 定义进度条样式半透明 -->
+<link rel="stylesheet" href="css/progress.css">
+<script src="js/bootstrap.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 左侧公共导航栏 -->
+<script type="text/javascript" src="js/common/selfslide.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 图表绘制 -->
+<script type="text/javascript" src="js/highcharts/highcharts.js"></script>
+<script type="text/javascript" src="js/highcharts/highcharts-more.js"></script>
+<!-- 瀑布流显示 -->
+<script type="text/javascript" src="js/jquery.masonry.js"></script>
+<script type="text/javascript" src="js/jquery.infinitescroll.js"></script>
+<script type="text/javascript" src="js/panohelp.js"></script>
+<!-- datatable -->
+<link rel="stylesheet" href="js/dataTables/dataTables.bootstrap.css">
+<script type="text/javascript" src="js/dataTables/jquery.dataTables.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		mainload();
+		if (username == "false") {
+			alert("未登录,自动跳转到登陆页面");
+			window.location.href = "login.html";
+		}
+		initslide();
+	</script>
+	<!--灰色遮罩层 begin-->
+	<div class="floatLayer" style="display: none" id="greypage">
+		<img src="img/loading.gif"
+			style="position: fixed; left: 50%; top: 50%; margin-left: -16px; margin-top: -16px" />
+	</div>
+	<!-- /. NAV SIDE  -->
+	<div style="margin-left: 260px;">
+		<div class="row">
+			<div class="col-md-12">
+				<h2>背景音乐库</h2>
+				<h5>
+					&nbsp;共<b id="musicnum">10</b>首音乐
+				</h5>
+			</div>
+		</div>
+		<!-- /. ROW  -->
+		<hr />
+
+		<div class="row">
+			<div class="col-md-12">
+				<!-- Advanced Tables -->
+				<div class="panel panel-default">
+					<div class="panel-heading">背景音乐列表</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-striped table-bordered table-hover"
+								id="dataTables-example">
+								<thead>
+									<tr>
+										<th>音乐ID</th>
+										<th>音乐名字</th>
+										<th>操作</th>
+									</tr>
+								</thead>
+								<tbody id="table">
+
+								</tbody>
+							</table>
+						</div>
+
+					</div>
+				</div>
+				<!--End Advanced Tables -->
+			</div>
+		</div>
+		<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title">删除音乐名字为</h4>
+						<h4 class="modal-title" id="musicId">20</h4>
+						<h4 class="modal-title" id="modaltitle"></h4>
+					</div>
+					<div class="modal-body">删除之后数据不可恢复,确定删除吗?</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" data-dismiss="modal"
+							onclick="confirmDeleteMusic()">确认</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/slidebarEffect.js"></script>
+	<!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME-->
+	<!-- JQUERY SCRIPTS -->
+	<!--  <script src="js/jquery-1.12.4.min.js"></script>-->
+	<!-- BOOTSTRAP SCRIPTS -->
+	<!-- <script src="js/bootstrap.min.js"></script> -->
+	<!-- DATA TABLE SCRIPTS -->
+	<script src="js/dataTables/jquery.dataTables.js"></script>
+	<script src="js/dataTables/dataTables.bootstrap.js"></script>
+	<script>
+		//加载表格数据
+		//与后台交互
+
+		var sucai_music_temp = getUserAllMusic(username);
+		var sucai_music = eval("(" + sucai_music_temp + ")");
+		document.getElementById("musicnum").innerHTML = sucai_music.length;
+		var table = document.getElementById("table");
+		var HTMLstr = "";
+		for ( var i = 0; i < sucai_music.length; i++) {
+			HTMLstr += "<tr class=\"gradeA\">"
+					+ "<td>"
+					+ i
+					+ "</td>"
+					+ "<td>"
+					+ sucai_music[i].musicName
+					+ "</td>"
+					+ "<td class=\"center\">&nbsp;&nbsp;&nbsp<a id=\"playbtn"
+					+ i
+					+ "\"class=\"btn btn-success\" onclick=\"playMusic(this)\">播放</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class=\"btn btn-success\" onclick=\"deleteMusic(this)\">删除</a></td></tr>"
+		}
+		table.innerHTML = HTMLstr;
+		function deleteMusic(node) {
+			var tr = node.parentNode.parentNode;
+			document.getElementById("musicId").innerHTML = tr.cells[1].innerHTML;
+			$('#deleteModal').modal('show');
+		}
+		function confirmDeleteMusic() {
+			var music_name = document.getElementById("musicId").innerHTML;
+			//alert("username:" + username + " music_name:" + music_name);
+			document.getElementById("greypage").style.display = "block";
+			$.when(deleteBGMusic(username, music_name)).done(function(data) {
+				var res = eval("(" + data + ")");
+				//alert("res.status:" + res.status);
+				location.reload();
+				document.getElementById("greypage").style.display = "none";
+			});
+		}
+		function playMusic(node) {
+			var tr = node.parentNode.parentNode;
+			var id = tr.cells[0].innerHTML;
+			var audio = document.getElementById("music_play");
+			audio.src = sucai_music[id].musicPath;
+
+			var text = document.getElementById("playbtn" + id).innerHTML;
+			if (text == "播放") {
+				audio.play();
+				document.getElementById("playbtn" + id).innerHTML = "暂停";
+			} else if (text == "暂停") {
+				audio.pause();
+				document.getElementById("playbtn" + id).innerHTML = "播放";
+			}
+		}
+		$(document).ready(function() {
+			$('#dataTables-example').dataTable();
+		});
+	</script>
+	<audio id="music_play" src="" style="height: 0px; width: 0px;"></audio>
+</body>
+</html>

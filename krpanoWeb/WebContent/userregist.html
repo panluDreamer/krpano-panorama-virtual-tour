@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title>用户注册</title>
+<link rel="stylesheet" href="css/loginCSS/pintuer.css">
+<link rel="stylesheet" href="css/loginCSS/admin.css">
+<link rel="stylesheet" type="text/css" href="css/progress.css">
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script src="js/pintuer.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+</head>
+<body style="background-image: url(img/bg.jpg)">
+	<!--灰色遮罩层 begin-->
+	<div class="floatLayer" style="display: none" id="greypage">
+		<img src="img/loading.gif"
+			style="position: fixed; left: 50%; top: 50%; margin-left: -16px; margin-top: -16px" />
+	</div>
+	<!--灰色遮罩层 end-->
+	<div class="bg"></div>
+	<div class="container">
+		<div class="line bouncein">
+			<div class="xs6 xm4 xs3-move xm4-move">
+				<div style="height: 50px;"></div>
+				<div class="media media-y margin-big-bottom"></div>
+				<form action="" method="post">
+					<div class="panel loginbox">
+						<div class="text-center margin-big padding-big-top">
+							<h1>快速注册</h1>
+						</div>
+						<div class="panel-body"
+							style="padding: 30px; padding-bottom: 10px; padding-top: 10px;">
+							<div class="form-group">
+								<div class="field field-icon-right">
+									<input type="text" class="input input-big" name="name"
+										id="name" placeholder="请填写用户名" data-validate="required:请填写账号" />
+									<span class="icon icon-user margin-small"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="field field-icon-right">
+									<input type="password" class="input input-big" name="password"
+										id="password" placeholder="请设置登录密码"
+										data-validate="required:请填写登陆密码" /> <span
+										class="icon icon-key margin-small"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="field field-icon-right">
+									<input type="password" class="input input-big" name="password"
+										id="confirmPassword" placeholder="请确认登录密码"
+										data-validate="required:请确认登陆密码" /> <span
+										class="icon icon-key margin-small"></span>
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="field field-icon-right">
+									<input type="text" class="input input-big" name="password"
+										id="mail" placeholder="请填写个人邮箱"
+										data-validate="required:请填写个人邮箱" />
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="field field-icon-right">
+									<input type="text" class="input input-big" name="password"
+										id="phone" placeholder="请填写个人手机号码"
+										data-validate="required:请填写个人手机号码" />
+								</div>
+							</div>
+						</div>
+						<div style="padding: 30px;">
+							<input type="button"
+								class="button button-block bg-main text-big input-big"
+								value="注册" onclick="registUser()">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function registUser() {
+			var username = document.getElementById("name").value;
+			var password = document.getElementById("password").value;
+			var confirmPassword = document.getElementById("confirmPassword").value;
+			var mail = document.getElementById("mail").value;
+			var phone = document.getElementById("phone").value;
+			//alert("username:" + username + " password:" + password
+			//		+ " confirmPassword:" + confirmPassword + " mail:" + mail
+			////		+ " phone:" + phone);
+			if (username == '' || password == '' || confirmPassword == ''
+					|| mail == '' || phone == '') {
+				alert("请将信息填写完整");
+			} else if (password != confirmPassword) {
+				alert("两次密码不匹配，请检查");
+			} else {
+				$.when(regist(username, password, mail, phone)).done(
+						function(data) {
+							var res = eval("(" + data + ")");
+							if (res.status == 'success') {
+								alert("注册成功");
+								window.location.href = "userlogin.html";
+							} else if (res.status == 'exist') {
+								alert("用户名已存在,请更换用户名");
+							} else {
+								alert("注册失败，请重试");
+							}
+						});
+
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<package name="check" extends="struts-default,json-default">
+		<!-- 部署自定义的拦截器 -->
+		<interceptors>
+			<interceptor name="checkInterceptor" class="org.krpano.util.CLoginInterceptor"></interceptor>
+		</interceptors>
+		<action name="checkLogin" method="checkUser"
+			class="org.krpanoweb.actionprogram.UserAction">
+			<interceptor-ref name="checkInterceptor"></interceptor-ref>
+			<interceptor-ref name="defaultStack" />
+			<result name="fail" type="json">
+				<param name="root">
+					failResult
+				</param>
+			</result>
+			<!-- 返回json类型数据 -->
+			<result name="success" type="json">
+				<param name="root">
+					successResult
+				</param>
+			</result>
+		</action>
+	</package>
+</struts>

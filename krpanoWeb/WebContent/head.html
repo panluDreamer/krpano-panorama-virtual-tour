@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>足不出户看世界</title>
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	//数据从后台返回，每次进入页面时，调用onload方法检查是否是登陆状态
+	var loginStatus = true;
+	var username = "lupan";
+</script>
+</head>
+<body>
+	<div class="header">
+		<div class="headerinner">
+			<ul class="headernav" id="nav">
+				<li class="logo"><img src="img/logoweb.jpg" alt="" /></li>
+				<li><a href="#">主页</a></li>
+				<li><a href="#">风景分享</a></li>
+				<li><a href="#">景点宣传</a></li>
+				<li><a href="#">在线体验</a></li>
+				<li><a href="#">about</a></li>
+				<li class="search"><a class="search_pic"></a></li>
+				<!--<li class="list"><a></a></li>  -->
+				<!-- <li><a href="#">about</a></li>
+				<li><a href="#">about</a></li> -->
+				<li class="list" id="loginlist"><a></a></li>
+				<li id="loginbtn"><a href="login.html">登陆</a></li>
+				<li id="registerbtn"><a href="register.html">注册</a></li>
+			</ul>
+			<!-- 搜索 -->
+			<form action="">
+				<div class="search_main">
+					<button class="search_btn" type="submit"></button>
+					<input class="search_text" type="text" placeholder="搜索"> <span
+						class="close_btn"></span>
+				</div>
+			</form>
+			<!-- 会员登录 -->
+			<div class="member" id="user"></div>
+			<script type="text/javascript">
+				if (loginStatus == true) {
+					var father = document.getElementById("nav");
+					var child1 = document.getElementById("loginbtn");
+					var child2 = document.getElementById("registerbtn");
+					father.removeChild(child1);
+					father.removeChild(child2);
+					document.getElementById("user").innerHTML = "<p>"
+							+ username
+							+ "的个人中心</p>"
+							+ "<ul>"
+							+ "<li><img src=\"img/huiyuan1.png\" alt=\"\"> <a href=\"#\">个人主页</a></li>"
+							+ "</ul>";
+				} else {
+					var father = document.getElementById("nav");
+					var child = document.getElementById("loginlist");
+					father.removeChild(child);
+				}
+			</script>
+		</div>
+	</div>
+	<script>
+		$(function() {
+			/*搜索*/
+			$(".search_pic").click(function() {
+				$(".headernav").fadeOut(200);
+				$(".search_main").fadeIn(1000);
+			});
+			$(".search_main .close_btn").click(function() {
+				$(".search_main").fadeOut(500);
+				$(".headernav").fadeIn(1000);
+			});
+			/*登录*/
+			$(".list a").click(function() {
+				$(".member").slideToggle(500);
+			});
+
+		});
+	</script>
+</body>
+</html>

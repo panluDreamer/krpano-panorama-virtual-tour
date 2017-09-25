@@ -1,0 +1,222 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>发布全景</title>
+
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+
+<link rel="stylesheet" href="zyupload/skins/zyupload-1.0.0.min.css "
+	type="text/css">
+
+<link rel="stylesheet" type="text/css" href="css/head.css" />
+<link rel="stylesheet" type="text/css" href="css/progress.css">
+<link rel="stylesheet" type="text/css" href="css/layer.css">
+<!-- 进度条 -->
+<script type="text/javascript" src="js/jqueryEffect/progress.js"></script>
+<script type="text/javascript" src="zyupload/zyupload-1.0.0.min.js"></script>
+<!-- 头部导航栏点击效果 -->
+<script type="text/javascript" src="js/jqueryEffect/title.js"></script>
+<!-- 公共头部导航栏 -->
+<script type="text/javascript" src="js/common/header.js"></script>
+<!-- 检查用户是否登陆函数js -->
+<script type="text/javascript" src=js/util.js></script>
+<!-- 检测用户登录状态 -->
+<script type="text/javascript" src="js/common/checklogin.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<script type="text/javascript" src="js/panohelp.js"></script>
+<style>
+/*messages*/
+.messages {
+	padding: 15px 0;
+	align: center;
+}
+
+.messages input,.messages select,.messages textarea {
+	margin: 0;
+	padding: 0;
+	background: none;
+	border: 0;
+	font-family: "Microsoft Yahei";
+}
+
+.messlist {
+	height: 30px;
+	margin-bottom: 10px;
+}
+
+.messlist label {
+	float: center;
+	width: 100px;
+	height: 30px;
+	font-size: 14px;
+	line-height: 30px;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.messlist input {
+	float: center;
+	width: 300px;
+	height: 28px;
+	padding-left: 5px;
+	border: #ccc 1px solid;
+}
+
+.messlist.textareas {
+	height: auto;
+}
+
+.messlist textarea {
+	float: center;
+	width: 400px;
+	height: 110px;
+	padding: 5px;
+	border: #ccc 1px solid;
+}
+</style>
+
+</head>
+<body onload="mainload()">
+	<!--灰色遮罩层 begin-->
+	<div class="floatLayer" style="display: none" id="greypage">
+		<img src="img/loading.gif"
+			style="position: fixed; left: 50%; top: 50%; margin-left: -16px; margin-top: -16px" />
+	</div>
+	<!--灰色遮罩层 end-->
+	<!-- <p align="center">
+		标题:<input id="pano_name" type="text" value="" placeholder="请输入发布全景的标题">
+	</p> -->
+	<div id="inputInfo" align="center" style="margin-top: 50px;">
+		<form class="messages">
+			<div class="messlist">
+				<label>标题</label> <input type="text" placeholder="请输入全景标题"
+					id="pano_name" onblur="" />
+				<div class="clears"></div>
+			</div>
+			<div class="messlist">
+				<label>分类</label> <input type="text" placeholder="请填写全景分类"
+					id="pano_type" onblur="" />
+				<div class="clears"></div>
+			</div>
+			<div class="messlist textareas">
+				<label>全景简介</label>
+				<textarea placeholder="说点什么吧..." id="pano_info" onblur=""></textarea>
+				<div class="clears"></div>
+			</div>
+		</form>
+	</div>
+	<div id="zyupload" class="zyupload"></div>
+
+	<script type="text/javascript">
+		mainload();//检测登陆状态
+		if (username == "false") {
+			window.location.href = "login.html";
+		}
+		var pano_name, pano_type, pano_info;
+		var number = 0;
+		//	document.getElementById("show_user").innerHTML = "username = "
+		//			+ username;
+		var pano_id;
+		$(function() {
+			// 初始化插件
+			$("#zyupload")
+					.zyUpload(
+							{
+								width : "650px", // 宽度
+								height : "400px", // 宽度
+								itemWidth : "140px", // 文件项的宽度
+								itemHeight : "115px", // 文件项的高度
+								url : "UploadAction.servlet?name=" + pano_name
+										+ "&&username=" + username, // 上传文件的路径
+								fileType : [ "jpg", "png", "txt", "js", "exe" ],// 上传文件的类型
+								fileSize : 51200000, // 上传文件的大小
+								multiple : true, // 是否可以多个文件上传
+								dragDrop : true, // 是否可以拖动上传文件
+								tailor : true, // 是否可以裁剪图片
+								del : true, // 是否可以删除文件
+								finishDel : true, // 是否在上传文件完成后删除预览
+								/* 外部获得的回调接口 */
+								onSelect : function(selectFiles, allFiles) { // 选择文件的回调方法  selectFile:当前选中的文件  allFiles:还没上传的全部文件
+									console.info("当前选择了以下文件：");
+									console.info(selectFiles);
+									//$("#uploadInf").append(
+									//		"<p>当前选择了文件：" + selectFiles
+									//			+ "</p>");
+								},
+								onDelete : function(file, files) { // 删除一个文件的回调方法 file:当前删除的文件  files:删除之后的文件
+									console.info("当前删除了此文件：");
+									console.info(file.name);
+									//$("#uploadInf").append(
+									//		"<p>删除了文件：" + file.name + "</p>");
+								},
+								onSuccess : function(file, response) { // 文件上传成功的回调方法
+									console.info("此文件上传成功：");
+									console.info(file.name);
+									console.info("此文件上传到服务器地址：");
+									console.info(response);
+									number++;
+									pano_id = response;
+									$("#uploadInf").append(
+											"<p>上传成功，文件地址是：" + response
+													+ "</p>");
+								},
+								onFailure : function(file, response) { // 文件上传失败的回调方法
+									console.info("此文件上传失败：");
+									console.info(file.name);
+								},
+								onComplete : function(response) { // 上传完成的回调方法
+									console.info("文件上传完成");
+									console.info(response);
+									//	$("#uploadInf").append(
+									//		"<p>文件全部上传完成：" + response + "</p>");
+
+									//上传完成隐藏进度条
+									//document.getElementById("greypage").style.display = "none";
+									alert("上传成功,pano_id = " + pano_id
+											+ " number=" + number
+											+ " pano_name=" + pano_name
+											+ " pano_type=" + pano_type
+											+ " pano_info=" + pano_info);
+									//开始生成全景
+									$
+											.when(
+													produce_pano(username,
+															pano_id, number,
+															pano_name,
+															pano_type,
+															pano_info))
+											.done(
+													function(data) {
+														number = 0;//number清零
+														//alert("data = " + data);
+														var jsonObject = eval("("
+																+ data + ")");
+														var result = jsonObject.status;
+														//alert("result = " + result);
+
+														if (result == "true") {
+															document
+																	.getElementById("greypage").style.display = "none";
+															alert("生成成功");
+															document
+																	.getElementById("inputInfo").innerHTML = "<a href=\"myfabu.html\">全景生成成功，点击前往我的发布查看</a>";
+															document
+																	.getElementById("zyupload").innerHTML = "";
+														} else {
+															document
+																	.getElementById("greypage").style.display = "none";
+															alert("生成失败，请检查图片格式及大小");
+															document
+																	.getElementById("inputInfo").innerHTML = "<a>抱歉，全景生成失败，请检查图片是否符合标准</a>";
+															document
+																	.getElementById("zyupload").innerHTML = "";
+														}
+													});
+									//这里可以看看能不能实现返回生成全景的过程信息
+								}
+							});
+		});
+	</script>
+</body>
+</html>

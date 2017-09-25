@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+	"http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<struts>
+	<!-- <constant name="struts.action.extension" value="action,,"></constant> -->
+	<!-- <constant name="struts.action.extension" value="do" /> -->
+	<!--解决乱码 -->
+	<constant name="struts.i18n.encoding" value="UTF-8"></constant>
+	<!-- 设置开发模式 -->
+	<constant name="struts.devMode" value="false"></constant>
+	<!-- 修改配置文件后自动重新加载 -->
+	<constant name="struts.configuration.xml.reload" value="true" />
+	<!-- 导入处理用户动作配置文件 -->
+	<include file="user.xml"></include>
+	<!-- 导入处理全景操作配置文件 -->
+	<include file="pano.xml"></include>
+	<!-- 导入检查用户是否登陆配置文件 -->
+	<include file="check.xml"></include>
+</struts>

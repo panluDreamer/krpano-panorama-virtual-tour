@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+<meta charset="UTF-8">
+<title>用户注册</title>
+<link rel="stylesheet" href="css/register.css" />
+
+<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
+<script type="text/javascript" src="js/userutil.js"></script>
+<!-- 需要放在最下面才有效??? -->
+
+</head>
+<body>
+	<!--版心-->
+	<div class="container">
+		<div class="register">
+			<!--用户名-->
+			<div class="register-box">
+				<!--表单项-->
+				<div class="box default">
+					<label for="userName">用&nbsp;户&nbsp;名</label> <input type="text"
+						id="userName" placeholder="您的账户名和登录名" /> <i></i>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--设置密码-->
+			<div class="register-box">
+				<!--表单项-->
+				<div class="box default">
+					<label for="pwd">设 置 密 码</label> <input type="password" id="pwd"
+						placeholder="建议至少两种字符组合" /> <i></i>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--确认密码-->
+			<div class="register-box">
+				<!--表单项-->
+				<div class="box default">
+					<label for="pwd2">确 认 密 码</label> <input type="password" id="pwd2"
+						placeholder="请再次输入密码" /> <i></i>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--设置密码-->
+			<div class="register-box">
+				<!--表单项-->
+				<div class="box default">
+					<label for="email">邮 箱 验 证</label> <input type="text" id="email"
+						placeholder="请输入邮箱" /> <i></i>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--手机验证-->
+			<div class="register-box">
+				<!--表单项-->
+				<div class="box default">
+					<label for="mobile">手 机 验 证</label> <input type="text" id="mobile"
+						placeholder="请输入手机号" /> <i></i>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--注册协议-->
+			<div class="register-box xieyi">
+				<!--表单项-->
+				<div class="box default">
+					<input type="checkbox" id="ck" /> <span>我已阅读并同意<a href="##">《用户注册协议》</a></span>
+				</div>
+				<!--提示信息-->
+				<div class="tip">
+					<i></i> <span></span>
+				</div>
+			</div>
+			<!--注册-->
+			<button id="btn">注册</button>
+			<button id="test" onclick="getRes()">测试按钮</button>
+			<script type="text/javascript">
+				function getRes() {
+					var username = "lupan";
+					var password = "123456";
+					var email = "123@qq.com";
+					var phone = "12312312";
+					alert("username = " + username + " password=" + password
+							+ " email=" + email + " phone=" + phone);
+					var result = regist(username, password, email, phone);
+					alert("result = " + result);
+				}
+			</script>
+		</div>
+
+	</div>
+</body>
+</html>
