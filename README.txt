@@ -1,1 +1,2 @@
 This project implements a panorama virtual tour using html5 and javascript based on krpano. The development environment is Eclipse j2EE and the application server is based on Tomcat and developed by J2EE and Struts architecture. 
+The project also contains the plugin codes of krpano such as view,marquee,share and so on.
